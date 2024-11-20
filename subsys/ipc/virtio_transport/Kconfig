@@ -1,0 +1,52 @@
+# Copyright (c) 2020-2021 Nordic Semiconductor (ASA)
+# SPDX-License-Identifier: Apache-2.0
+
+# Workaround for not being able to have commas in macro arguments
+DT_CHOSEN_Z_IPC := zephyr,ipc
+DT_CHOSEN_Z_IPC_TX := zephyr,ipc_tx
+DT_CHOSEN_Z_IPC_RX := zephyr,ipc_rx
+
+menuconfig VIRTIO_MSG_SERVICE
+	bool "virtio msg service"
+	select IPM
+	select OPENAMP
+	select OPENAMP_WITH_VIRTIO_MSG
+	help
+	  Enables support for a service to support virtio device over the
+	  virtio rpmsg transport layer
+
+if VIRTIO_MSG_SERVICE
+
+choice VIRTIO_MSG_SERVICE_MODE
+	prompt "RPMsg Service mode"
+
+config VIRTIO_MSG_SERVICE_MODE_HOST
+	bool "RPMsg master"
+	select OPENAMP_MASTER
+
+config VIRTIO_MSG_SERVICE_MODE_REMOTE
+	bool "RPMsg remote"
+	select OPENAMP_SLAVE
+
+endchoice
+
+config VIRTIO_MSG_SERVICE_INIT_PRIORITY
+	int "Initialization priority of virtio msg service"
+	default 48
+	help
+	  The order of virtio msg service initialization.
+	  If in doubt, do not modify this value.
+
+config VIRTIO_MSG_SERVICE_WORK_QUEUE_STACK_SIZE
+	int "Size of RX work queue stack"
+	default 2048
+	help
+	  Size of stack used by work queue RX thread. This work queue is
+	  created in the RPMsg Service backend module to prevent notifying
+	  service users about received data from the system work queue.
+
+module = VIRTIO_MSG_SERVICE
+module-str = Virtio msg service bus
+source "subsys/logging/Kconfig.template.log_config"
+
+endif # VIRTIO_MSG_SERVICE

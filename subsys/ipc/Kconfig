@@ -7,5 +7,5 @@ menu "Inter Processor Communication"
 
 source "subsys/ipc/rpmsg_service/Kconfig"
 source "subsys/ipc/ipc_service/Kconfig"
-
+source "subsys/ipc/virtio_transport/Kconfig"
 endmenu
