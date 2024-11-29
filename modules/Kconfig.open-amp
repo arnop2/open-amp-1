@@ -37,4 +37,9 @@ config OPENAMP_WITH_DCACHE
 	depends on CACHE_MANAGEMENT
 	help
 	  Build OpenAMP with vrings cache operations enabled.
+
+config OPENAMP_WITH_VIRTIO_MSG
+	bool "Build OpenAMP with virtio_msg support enabled"
+	help
+	  Build OpenAMP with using the virtio msg protocol
 endif # OPENAMP
